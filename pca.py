@@ -23,4 +23,5 @@ from sklearn.decomposition import PCA
 workbook = xlrd.open_workbook('./Base/S01_V01_01.xls')
 for sheet in workbook.sheets():
     for row in range(sheet.ncols):
-        print(sheet.cell(row, col).value)
+        for column in range(sheet.ncols):
+            print(sheet.cell(row,column).value)

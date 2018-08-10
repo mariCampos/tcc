@@ -13,15 +13,24 @@ import matplotlib.pyplot as plt
 import xlrd
 from sklearn.decomposition import PCA
 
-#Open the table get de the values
-
-# workbook = xlrd.open_workbook('./Base/S01_V01_01.xls')
-# worksheet = workbook.sheet_by_name('Gyroscope')
-# worksheet = workbook.sheet_by_index(0)
-# print(worksheet.cell(1, 0).value)
+#get the features
 
 workbook = xlrd.open_workbook('./Base/S01_V01_01.xls')
+worksheet = workbook.sheet_by_name('Gyroscope')
+worksheet = workbook.sheet_by_index(0)
+for col in range(sheet.ncols):
+    features.append(worksheet.cell(0, col).value)
+
+#Open the table get de the values
+workbook = xlrd.open_workbook('./Base/S01_V01_01.xls')
 for sheet in workbook.sheets():
-    for row in range(sheet.ncols):
+    for row in range(sheet.nrows):
         for column in range(sheet.ncols):
             print(sheet.cell(row,column).value)
+            line.append(sheet.cell(row,column).value)
+        # Separating out the features
+        x = df.loc[:, features].values
+    # Separating out the target
+    y = df.loc[:,['target']].values
+    # Standardizing the features
+    x = StandardScaler().fit_transform(x)

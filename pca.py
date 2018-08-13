@@ -12,25 +12,38 @@ import matplotlib.pyplot as plt
 
 import xlrd
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+import pandas as pd
 
 #get the features
 
 workbook = xlrd.open_workbook('./Base/S01_V01_01.xls')
 worksheet = workbook.sheet_by_name('Gyroscope')
 worksheet = workbook.sheet_by_index(0)
-for col in range(sheet.ncols):
+features = []
+for col in range(worksheet.ncols):
     features.append(worksheet.cell(0, col).value)
 
 #Open the table get de the values
+workbook = pd.read_excel('./Base/S01_V01_01.xls', sheetname='Gyroscope')
+# Separating out the features
+x = workbook.loc[:, features].values
+# Standardizing the features
+standard = StandardScaler().fit_transform(x)
+pca = PCA(n_components=24)
+
+#Calculate pca
+principalComponents = pca.fit_transform(standard)
+#get each line and calculate dot product with the pca
 workbook = xlrd.open_workbook('./Base/S01_V01_01.xls')
-for sheet in workbook.sheets():
-    for row in range(sheet.nrows):
-        for column in range(sheet.ncols):
-            print(sheet.cell(row,column).value)
-            line.append(sheet.cell(row,column).value)
-        # Separating out the features
-        x = df.loc[:, features].values
-    # Separating out the target
-    y = df.loc[:,['target']].values
-    # Standardizing the features
-    x = StandardScaler().fit_transform(x)
+worksheet = workbook.sheet_by_index(0)
+for row in range(x):
+    line = []
+    for column in range(worksheet.ncols):
+        print(worksheet.cell(row,column).value)
+        line.append(worksheet.cell(row,column).value)
+    Y = np.dot(line, principalComponents)
+    print(Y)
+
+    

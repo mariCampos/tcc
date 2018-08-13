@@ -38,7 +38,7 @@ principalComponents = pca.fit_transform(standard)
 #get each line and calculate dot product with the pca
 workbook = xlrd.open_workbook('./Base/S01_V01_01.xls')
 worksheet = workbook.sheet_by_index(0)
-for row in range(x):
+for row in range(x.):
     line = []
     for column in range(worksheet.ncols):
         print(worksheet.cell(row,column).value)

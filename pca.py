@@ -35,6 +35,7 @@ pca = PCA(n_components=24)
 
 #Calculate pca
 principalComponents = pca.fit_transform(standard)
+print('principalComponents', principalComponents)
 #get each line and calculate dot product with the pca
 workbook = xlrd.open_workbook('./Base/S01_V01_01.xls')
 worksheet = workbook.sheet_by_index(0)
@@ -45,7 +46,11 @@ for row in range(1, worksheet.nrows):
         line.append(worksheet.cell(row,column).value)
     
     newLine = np.asarray(line, dtype=np.float32)
-    Y = np.dot(newLine, principalComponents)
-    print(Y)
+    Y = np.dot(newLine, principalComponents[0])
+    #print(Y)
+
+
+#The second stage
+
 
     

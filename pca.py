@@ -22,12 +22,13 @@ def plotGraphic(matrix):
     for row in range(0, len(matrix) -1):
         previous = matrix[row]
         current = matrix[row + 1]
+        print('previous', previous)
+        print('current', current)
             
-        matplotlib.rcParams['axes.unicode_minus'] = False
-        fig, ax = plt.subplots()
-        ax.plot(previous, current, 'o')
-        ax.set_title('S01_V01_01')
-        plt.show()
+        scatter_plot = plt.scatter(previous, current, alpha=0.5, 
+                           c=current)
+    
+    plt.show()
         
 
 

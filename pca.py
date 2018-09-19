@@ -22,8 +22,6 @@ def plotGraphic(matrix):
     for row in range(0, len(matrix) -1):
         previous = matrix[row]
         current = matrix[row + 1]
-        print('previous', previous)
-        print('current', current)
             
         scatter_plot = plt.scatter(previous, current, alpha=0.5, 
                            c=current)
@@ -96,12 +94,12 @@ for col in range(worksheet.ncols):
 workbook = pd.read_excel('./Base/S01_V01_01.xlsx', sheet_name='Gyroscope')
 # Separating out the features
 x = workbook.loc[:, features].values
-# Standardizing the features
-standard = StandardScaler().fit_transform(x)
+
 pca = PCA(n_components=24)
 
 # #Calculate pca
-principalComponents = pca.fit_transform(standard)
+principalComponents = pca.fit(np.array(x))
+print('pca', principalComponents.singular_values_)
 
 #get each line and calculate dot product with the pca
 workbook = xlrd.open_workbook('./Base/S01_V01_01.xlsx')
@@ -115,9 +113,8 @@ for row in range(1, worksheet.nrows):
         line.append(worksheet.cell(row,column).value)
     
     newLine = np.asarray(line, dtype=np.float32)
-    for pcaArray in principalComponents:
-        Y = np.dot(newLine, pcaArray)
-        lineMatriz.append(Y)
+    Y = np.dot(newLine, principalComponents.singular_values_)
+    lineMatriz.append(Y)
 
     matrizY.append(lineMatriz)
 

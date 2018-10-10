@@ -10,6 +10,20 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 
 
+def plot(matrix):
+    
+    for row in range(0, len(matrix) -1):
+        print('row', matrix[row])
+        x = matrix[row][0]
+        y = matrix[row][1]
+
+        scatter_plot = plt.scatter(x, y, alpha=0.5, 
+                           c=x)
+    
+    plt.show()
+
+
+
 
 def plotGraphic(matrix):
     for row in range(0, len(matrix) -1):
@@ -57,7 +71,7 @@ newPCA = pca.fit_transform(x)
 print(len(newPCA))
 print(newPCA[0])
 
-plotGraphic(newPCA)
+plot(newPCA)
 
 
 # pcaMatrix = []

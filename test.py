@@ -10,6 +10,7 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 
 
+
 def plotGraphic(matrix):
     for row in range(0, len(matrix) -1):
         previous = matrix[row]
@@ -52,27 +53,32 @@ x = df.loc[:, features].values
 
 # Standardizing the features
 x = StandardScaler().fit_transform(x)
+newPCA = pca.fit_transform(x)
+print(len(newPCA))
+print(newPCA[0])
+
+plotGraphic(newPCA)
 
 
-pcaMatrix = []
-#Separate data corresponding to base interval
-for row in range(len(x)):
-    line = []
-    for col in range(18, 24):
-        line.append(x[row][col])
-    pcaMatrix.append(line)
+# pcaMatrix = []
+# #Separate data corresponding to base interval
+# for row in range(len(x)):
+#     line = []
+#     for col in range(18, 24):
+#         line.append(x[row][col])
+#     pcaMatrix.append(line)
 
-matrizY = []
-for row in range(len(matrizX)):
-    line = []
-    for principalComponent in range(len(pcaMatrix)):
-        Y = np.dot(row, principalComponent)
-        line.append(Y)
+# matrizY = []
+# for row in range(len(matrizX)):
+#     line = []
+#     for principalComponent in range(len(pcaMatrix)):
+#         Y = np.dot(row, principalComponent)
+#         line.append(Y)
     
-    matrizY.append(line)
+#     matrizY.append(line)
 
 
-plotGraphic(pcaMatrix)
+#plotGraphic(matrizY)
 
 
 

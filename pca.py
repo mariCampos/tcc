@@ -9,6 +9,7 @@
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+from decimal import *
 #import seaborn as sns; sns.set()
 
 import xlrd
@@ -26,7 +27,7 @@ def plotGraphic(matrix):
         scatter_plot = plt.scatter(previous, current, alpha=0.5, 
                            c=current)
     
-    plt.show()
+        plt.show()
         
 
 
@@ -83,27 +84,33 @@ print(matrizY)
 '''
 #get the features
 
-workbook = xlrd.open_workbook('./Base/S01_V01_01.xlsx')
-worksheet = workbook.sheet_by_name('Gyroscope')
-worksheet = workbook.sheet_by_index(0)
+workbook = xlrd.open_workbook('./Base/S01_V02_01.xlsx')
+worksheet = workbook.sheet_by_name('Accelerometer')
+worksheet = workbook.sheet_by_index(1)
 features = []
 for col in range(worksheet.ncols):
     features.append(worksheet.cell(0, col).value)
 
 #Open the table get de the values
-workbook = pd.read_excel('./Base/S01_V01_01.xlsx', sheet_name='Gyroscope')
+workbook = pd.read_excel('./Base/S01_V02_01.xlsx', sheet_name='Accelerometer')
 # Separating out the features
-x = workbook.loc[:, features].values
+dbwhithoutFeatures = workbook.loc[:, features].values
 
-pca = PCA(n_components=24)
+
+#Get foot sensors
+print('worksheet', dbwhithoutFeatures)
+
+
+
+pca = PCA(n_components=6)
 
 # #Calculate pca
-principalComponents = pca.fit(np.array(x))
-print('pca', principalComponents.singular_values_)
+principalComponents = pca.fit_transform(np.array(dbwhithoutFeatures))
+print('pca', principalComponents)
 
 #get each line and calculate dot product with the pca
-workbook = xlrd.open_workbook('./Base/S01_V01_01.xlsx')
-worksheet = workbook.sheet_by_index(0)
+workbook = xlrd.open_workbook('./Base/S01_V02_01.xlsx')
+worksheet = workbook.sheet_by_index(1)
 
 matrizY = []
 for row in range(1, worksheet.nrows):
@@ -113,9 +120,9 @@ for row in range(1, worksheet.nrows):
         line.append(worksheet.cell(row,column).value)
     
     newLine = np.asarray(line, dtype=np.float32)
-    Y = np.dot(newLine, principalComponents.singular_values_)
-    lineMatriz.append(Y)
-
+    for principalComponent in principalComponents:
+        Y = np.dot(newLine, principalComponent)
+        lineMatriz.append(Y)
     matrizY.append(lineMatriz)
 
 plotGraphic(matrizY)

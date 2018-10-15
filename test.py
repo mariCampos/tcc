@@ -18,8 +18,8 @@ def plot(matrix):
         y = matrix[row][1]
 
         scatter_plot = plt.scatter(x, y, alpha=0.5, 
-                           c=x)
-    
+                           c=x2)
+     
     plt.show()
 
 

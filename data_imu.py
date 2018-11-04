@@ -11,19 +11,24 @@ import xlrd
 
 def plot(time, data):
     plt.figure()
-    plt.plot(time, data)
+    inflection = get_max_min(data)
+    plt.plot(time, data, '-gD', markevery=inflection)
     plt.show()
 
 
 def gaussian_smooth(x):
     return gaussian_filter(x, 15)
 
-def get_inflection_point(data):
-    dx = np.diff(data)
-    dx2 = np.diff(dx)
-    return dx2
-    #return np.sum(dx[1:] * dx[:-1] < 0)
 
+def get_max_min(data):
+    array = []
+    for x in range(0, len(data) -1):
+        previous = data[x-1]
+        
+        if (data[x] > previous and data[x] > data[x+1]) or (data[x] < previous and data[x] < data[x+1]):
+            array.append(x)
+    
+    return array
 
 
 
@@ -49,5 +54,4 @@ array_data = gaussian_smooth(array_data)
 #plot(array_time, array_data)
 
 #Get the diff
-print(get_inflection_point(array_data))
 plot(array_time, array_data)

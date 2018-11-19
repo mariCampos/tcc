@@ -56,26 +56,28 @@ def get_max_min(data):
     return array
 
 def get_time(time, markers_left, markers_right):
-    params = {}
+
     ec_1 = time[markers_left[18]]
     ic_2 = time[markers_left[20]]
     ec_2 = time[markers_left[22]]
 
-    t_sw = ic_2 - ec_2
+    t_sw = ic_2 - ec_1
     t_st = ec_2 - ic_2
 
-    params['t_sw_l'] = t_sw
-    params['t_st_l'] = t_st
+    params['t_sw_l'] = round(t_sw, 2)
+    params['t_st_l'] = round(t_st, 2)
 
     ec_1 = time[markers_right[18]]
     ic_2 = time[markers_right[20]]
     ec_2 = time[markers_right[22]]
 
-    t_sw = ic_2 - ec_2
+    t_sw = ic_2 - ec_1
     t_st = ec_2 - ic_2
 
-    params['t_sw_r'] = t_sw
-    params['t_st_r'] = t_st
+    params['t_sw_r'] = round(t_sw, 2)
+    params['t_st_r'] = round(t_st, 2)
+
+    print(params)
 
     calculate_ratios()
 
@@ -87,14 +89,14 @@ def calculate_ratios():
 
     print('t_st_r', t_st_r)
     print('t_st_l', t_st_l)
-    params['r_st'] = (t_st_r / t_st_l)
-    all_ratios_array.append(t_st_r / t_st_l)
+    params['r_st'] = round((t_st_r / t_st_l), 2)
+    all_ratios_array.append(round((t_st_r / t_st_l), 2))
 
     t_sw_r = params.get('t_sw_r')
     t_sw_l = params.get('t_sw_l')
 
-    params['r_sw'] = t_sw_r / t_sw_l
-    all_ratios_array.append(t_sw_r / t_sw_l)
+    params['r_sw'] = round((t_sw_r / t_sw_l), 2)
+    all_ratios_array.append(round((t_sw_r / t_sw_l), 2))
 
     print(params)
 
@@ -217,7 +219,7 @@ def get_imu_data_from_hand(worksheet):
 def data_imu_main():
 
     print('Initialize IMU script')
-    for i in range(2,5):
+    for i in range(2,3):
         for j in range(1,5):
             workbook = xlrd.open_workbook('./Base/S01_V0' + str(i) + '_0'+ str(j) +'.xlsx')
             worksheet = workbook.sheet_by_name('Accelerometer')

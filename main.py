@@ -2,7 +2,7 @@ import numpy as np
 import csv
 import pandas as pd
 import decisionTree as dt
-import data_imu as di
+# import data_imu as di
 
 dataset_complete = []
 
@@ -18,11 +18,11 @@ def write_clinical_database():
     dataset2 = dataset.iloc[4:29, 1:36].values.astype(float)
 
     #get data from IMU sensors
-    ratios_from_imu = di.data_imu_main()
-    print('Ratios rom IMU', ratios_from_imu)
+    # ratios_from_imu = di.data_imu_main()
+    # print('Ratios rom IMU', ratios_from_imu)
 
     for x in range(0, len(dataset1)):
-        dataset_complete.append(np.concatenate((dataset1[x], dataset2[x], ratios_from_imu), axis=0))
+        dataset_complete.append(np.concatenate((dataset1[x], dataset2[x]), axis=0))
 
     initialize_algorithm()
 

@@ -18,9 +18,10 @@ def gbdt_params():
     params['objective'] = 'regression_l1'
     params["bagging_freq"] = 1
     params['sub_feature'] = 0.5
-    params['num_leaves'] = 31
+    params['num_leaves'] = 10
     params['min_data'] = 1
     params['max_depth'] = 20
+    params['metric'] = 'binary_logloss'
 
     return params
 
@@ -32,11 +33,11 @@ def rf_params():
     params['boosting_type'] = 'rf'
     params['task'] = 'predict'
     params['application'] = 'multiclass'
-    params['objective'] = 'regression_l1'
+    params['objective'] = 'binary'
     params["bagging_freq"] = 1
     params["bagging_fraction"] = 0.5
     params['sub_feature'] = 0.5
-    params['num_leaves'] = 20
+    params['num_leaves'] = 10
     params['min_data'] = 1
     params['max_depth'] = 10
 
@@ -56,7 +57,7 @@ def dart_params():
     params['uniform_drop'] = False
     params['drop_seed'] = 1
     params['application'] = 'multiclass'
-    params['objective'] = 'regression_l1'
+    params['objective'] = 'regression_l2'
     params["bagging_freq"] = 1
     params['sub_feature'] = 0.5
     params['num_leaves'] = 10
@@ -149,7 +150,7 @@ def initialize_decision_tree(x_data, y_data):
 
     d_train = lgb.Dataset(x_train, label=y_train)
 
-    params = dart_params()
+    params = goss_params()
     clf = lgb.train(params, d_train, 50)
 
     y_pred = clf.predict(x_test)

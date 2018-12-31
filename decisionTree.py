@@ -14,14 +14,16 @@ def gbdt_params():
     params['learning_rate'] = 0.01
     params['boosting_type'] = 'gbdt'
     params['task'] = 'predict'
-    params['application'] = 'multiclass'
+    params['application'] = 'regression'
     params['objective'] = 'regression_l1'
     params["bagging_freq"] = 1
     params['sub_feature'] = 0.5
-    params['num_leaves'] = 10
+    params['num_leaves'] = 31
+    params['num_iterations'] = 700
     params['min_data'] = 1
     params['max_depth'] = 20
     params['metric'] = 'binary_logloss'
+    params['input_model'] = 'predict'
 
     return params
 
@@ -32,14 +34,15 @@ def rf_params():
     params['learning_rate'] = 0.01
     params['boosting_type'] = 'rf'
     params['task'] = 'predict'
-    params['application'] = 'multiclass'
-    params['objective'] = 'binary'
+    params['application'] = 'regression'
+    params['objective'] = 'regression_l1'
     params["bagging_freq"] = 1
     params["bagging_fraction"] = 0.5
     params['sub_feature'] = 0.5
     params['num_leaves'] = 10
     params['min_data'] = 1
-    params['max_depth'] = 10
+    params['max_depth'] = 15
+    params['num_iterations'] = 150
 
     return params
 
@@ -73,13 +76,14 @@ def goss_params():
     params['learning_rate'] = 0.01
     params['boosting_type'] = 'goss'
     params['task'] = 'predict'
-    params['application'] = 'multiclass'
+    params['application'] = 'regression'
     params['objective'] = 'regression_l1'
     params["bagging_freq"] = 1
     params['sub_feature'] = 0.5
     params['num_leaves'] = 10
     params['min_data'] = 1
     params['max_depth'] = -1
+    params['num_iterations'] = 700
     params['top_rate'] = 0.2
     params['other_rate'] = 0.1
 
@@ -160,6 +164,10 @@ def initialize_decision_tree(x_data, y_data):
 
     error = calculate_error(y_test, y_pred)
     print('Error: ', error)
+
+    from sklearn.metrics import explained_variance_score
+    explained_variance = explained_variance_score(y_test, y_pred)
+    print(explained_variance)
 
 
 

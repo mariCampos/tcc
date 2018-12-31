@@ -15,15 +15,31 @@ all_ratios_array = []
 
 
 def plot(time, data_left, data_right):
-    plt.figure()
+
+    fig, axs = plt.subplots(2, 1, constrained_layout=True)
     inflection_left = get_max_min(data_left)
-    plt.plot(time, data_left, '-gD', markevery=inflection_left)
+    axs[0].plot(time, data_left, '-bD', markevery=inflection_left)
+    axs[0].set_title('Sinal do módulo acelerômetro perna esquerda')
+    axs[0].set_xlabel('tempo (segundos)')
+    axs[0].set_ylabel('Frequência (Hz)')
+
+    inflection_right = get_max_min(data_right)
+    axs[1].plot(time, data_right, '-rD', markevery=inflection_right)
+    axs[1].set_title('Sinal do módulo acelerômetro perna direita')
+    axs[1].set_xlabel('tempo (segundos)')
+    axs[1].set_ylabel('Frequência (Hz)')
+
     plt.show()
 
-    plt.figure()
-    inflection_right = get_max_min(data_right)
-    plt.plot(time, data_right, '-rD', markevery=inflection_right)
-    plt.show()
+    # plt.figure()
+    # inflection_left = get_max_min(data_left)
+    # plt.plot(time, data_left, '-bD', markevery=inflection_left)
+    # plt.show()
+
+    # plt.figure()
+    # inflection_right = get_max_min(data_right)
+    # plt.plot(time, data_right, '-rD', markevery=inflection_right)
+    # plt.show()
 
     get_time(time, inflection_left, inflection_right)
 

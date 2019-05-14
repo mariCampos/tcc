@@ -9,6 +9,10 @@ from sklearn.model_selection import train_test_split
 def calculate_error(test, pred):
     return mean_squared_error(test, pred) 
 
+def mean_absolute_percentage_error(y_true, y_pred): 
+    y_true, y_pred = np.array(y_true), np.array(y_pred)
+    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
 def gbdt_params():
     params = {}
     params['learning_rate'] = 0.01
@@ -89,53 +93,6 @@ def goss_params():
 
     return params
 
-#importing the dataset
-# dataset = pd.read_csv('./Base/Clinical_Database_last_Sheet1.csv', low_memory=False)
-# X = dataset.iloc[3:28, 2:96].values.astype(float)
-# y = np.array(dataset.iloc[3:28, 1].values.astype(int))
-
-# print('X ', X)
-
-
-# Splitting the dataset into the Training set and Test set
-# from sklearn.model_selection import train_test_split
-# x_train, x_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
-
-
-#Feature Scaling
-# from sklearn.preprocessing import StandardScaler
-# sc = StandardScaler()
-# x_train = sc.fit_transform(x_train)
-# x_test = sc.transform(x_test)
-
-#Using lightgbm
-
-# d_train = lgb.Dataset(x_train, label=y_train)
-
-# params = rf_params()
-# clf = lgb.train(params, d_train, 50)
-
-# y_pred = clf.predict(x_test)
-
-# print('y_test', y_test)
-# print('y_pred', y_pred)
-
-# error = calculate_error(y_test, y_pred)
-# print('error', error)
-
-
-
-#Confusion matrix
-#from sklearn.metrics import confusion_matrix
-#cm = confusion_matrix(y_test, y_pred)
-#Accuracy
-#from sklearn.metrics import accuracy_score
-#accuracy=accuracy_score(y_pred,y_test)
-#print(accuracy)
-
-# error = calculate_error(y_test, y_pred)
-# print(error)
-
 def initialize_decision_tree(x_data, y_data):
     
     x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size = 0.25, random_state = 0)
@@ -154,7 +111,7 @@ def initialize_decision_tree(x_data, y_data):
 
     d_train = lgb.Dataset(x_train, label=y_train)
 
-    params = goss_params()
+    params = rf_params()
     clf = lgb.train(params, d_train, 50)
 
     y_pred = clf.predict(x_test)
@@ -162,13 +119,15 @@ def initialize_decision_tree(x_data, y_data):
     print('y_test: ', y_test)
     print('y_pred: ', y_pred)
 
+    print(" =================== METRICS ===================")
+
     error = calculate_error(y_test, y_pred)
     print('Error: ', error)
 
     from sklearn.metrics import explained_variance_score
     explained_variance = explained_variance_score(y_test, y_pred)
-    print(explained_variance)
+    print("Explained variance: ", explained_variance)
 
-
-
+    mean_absolute_error = mean_absolute_percentage_error(y_test, y_pred)
+    print("Mean Absolute Percentage error: ", mean_absolute_error, "%")
 

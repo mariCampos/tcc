@@ -19,11 +19,11 @@ def gbdt_params():
     params['boosting_type'] = 'gbdt'
     params['task'] = 'predict'
     params['application'] = 'regression'
-    params['objective'] = 'regression_l1'
+    params['objective'] = 'regression_l2'
     params["bagging_freq"] = 1
     params['sub_feature'] = 0.5
     params['num_leaves'] = 31
-    params['num_iterations'] = 700
+    params['num_iterations'] = 1000
     params['min_data'] = 1
     params['max_depth'] = 20
     params['metric'] = 'binary_logloss'
@@ -35,18 +35,22 @@ def gbdt_params():
 def rf_params():
     #random forest
     params = {}
-    params['learning_rate'] = 0.01
+    params['learning_rate'] = 0.1
     params['boosting_type'] = 'rf'
     params['task'] = 'predict'
     params['application'] = 'regression'
-    params['objective'] = 'regression_l1'
+    params['objective'] = 'regression_l2'
     params["bagging_freq"] = 1
     params["bagging_fraction"] = 0.5
     params['sub_feature'] = 0.5
-    params['num_leaves'] = 10
+    params['num_leaves'] = 900
     params['min_data'] = 1
     params['max_depth'] = 15
-    params['num_iterations'] = 150
+    params['num_iterations'] = 700
+    params['n_estimators'] = 300
+    params['colsample_bytree'] = 0.7
+    params['n_jobs'] = 1
+    params['reg_lambda'] = 0
 
     return params
 
@@ -81,15 +85,16 @@ def goss_params():
     params['boosting_type'] = 'goss'
     params['task'] = 'predict'
     params['application'] = 'regression'
-    params['objective'] = 'regression_l1'
+    params['objective'] = 'regression_l2'
     params["bagging_freq"] = 1
     params['sub_feature'] = 0.5
-    params['num_leaves'] = 10
+    params['num_leaves'] = 20
     params['min_data'] = 1
     params['max_depth'] = -1
-    params['num_iterations'] = 700
+    params['num_iterations'] = 1000
     params['top_rate'] = 0.2
     params['other_rate'] = 0.1
+
 
     return params
 
@@ -115,6 +120,8 @@ def initialize_decision_tree(x_data, y_data):
     clf = lgb.train(params, d_train, 50)
 
     y_pred = clf.predict(x_test)
+
+    print("Random Forest test \n")
 
     print('y_test: ', y_test)
     print('y_pred: ', y_pred)
